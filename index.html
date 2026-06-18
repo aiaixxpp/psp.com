@@ -11,9 +11,77 @@
   <script type="text/javascript" src="https://static-pp.atkqsc.com/js/lazyload.min.js"></script>
   <script type="text/javascript" src="https://static-pp.atkqsc.com/js/common.js?v0.28"></script>
   
-  
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <script>
+  
+  
+  // 让页面所有M3U8链接支持点击播放
+(function() {
+    // 创建播放器弹窗
+    let modal = document.getElementById('m3u8PlayerModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'm3u8PlayerModal';
+        modal.innerHTML = `
+            <div style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; justify-content:center; align-items:center;" id="modalOverlay">
+                <div style="position:relative; width:90%; max-width:900px; background:#000; border-radius:12px;">
+                    <button style="position:absolute; top:-40px; right:0; width:36px; height:36px; background:#ff3b30; color:white; border:none; border-radius:50%; cursor:pointer; font-size:20px;" id="closeModalBtn">✕</button>
+                    <div style="position:relative; padding-top:56.25%;">
+                        <video id="m3u8Video" controls autoplay style="position:absolute; top:0; left:0; width:100%; height:100%;"></video>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    const overlay = document.getElementById('modalOverlay');
+    const video = document.getElementById('m3u8Video');
+    const closeBtn = document.getElementById('closeModalBtn');
+    let hls = null;
+
+    function playM3U8(url) {
+        if (hls) hls.destroy();
+        video.src = '';
+        
+        if (Hls && Hls.isSupported()) {
+            hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+            hls.on(Hls.Events.ERROR, (e, data) => alert('播放失败：' + (data.details || '链接无效')));
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = url;
+            video.play();
+        } else {
+            alert('浏览器不支持M3U8播放');
+        }
+        overlay.style.display = 'flex';
+    }
+
+    closeBtn.onclick = () => {
+        overlay.style.display = 'none';
+        if (hls) hls.destroy();
+        video.pause();
+        video.src = '';
+    };
+    overlay.onclick = (e) => { if (e.target === overlay) closeBtn.onclick(); };
+
+    // 绑定所有M3U8链接
+    document.querySelectorAll('a[href*=".m3u8"], a[href*="m3u8"]').forEach(link => {
+        link.onclick = function(e) {
+            e.preventDefault();
+            playM3U8(this.href);
+        };
+    });
+})();
+  
+  
+  
+  
+  
+  
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
@@ -22,6 +90,12 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
+
+
+
+
+
+
 
 
     <script>
@@ -126,7 +200,7 @@ var _hmt = _hmt || [];
                         <p>PG娱乐</p>
                     </div>
 
-
+						
 				
 					
 					<div class="appico">
@@ -219,6 +293,19 @@ var _hmt = _hmt || [];
                         <p>暗网视频</p>
                     </div>
                    
+					<div class="appico">
+                        <a aid="1087" href="https://tupiantuoguan.top/mimi/douyinzhongwen.webp" target="_blank" referrerpolicy="no-referrer" class="downurl">
+                            <div class="naicon btnx btn-raised" title="麻豆视频">
+                                <img class="jxLazyClass" src="https://tupiantuoguan.top/mimi/madoumianfei.gif">
+                            </div>
+                        </a>
+                            <p>麻豆视频</p>
+                    </div>
+					
+					
+					
+					
+					
 					
 					<div class="appico">
                         <a aid="1341" href="https://pg61.0700042.cc" target="_blank" referrerpolicy="no-referrer" class="downurl">
@@ -228,7 +315,7 @@ var _hmt = _hmt || [];
                         </a>
                         <p>PG电子</p>
                     </div>
-                  
+                   
 					
 					<div class="appico">
                         <a aid="1462" href="https://vlj4u5t.cc/cg-mark/?channelCode=kptl8m" target="_blank" referrerpolicy="no-referrer" class="downurl">
@@ -246,6 +333,18 @@ var _hmt = _hmt || [];
                         </a>
                         <p>妖妖直播</p>
                     </div>
+                   
+                   <div class="appico">
+                        <a aid="1087" href="https://94c3ae6f.xcedg308k.top/?channelCode=A00848" target="_blank" referrerpolicy="no-referrer" class="downurl">
+                            <div class="naicon btnx btn-raised" title="附近约炮">
+                                <img class="jxLazyClass" src="https://evdata-labs-prod.oss-cn-shanghai.aliyuncs.com/2025/09/17/5b8184b940c94ff4839ca15f6b1cd5df7746.jpg">
+                            </div>
+                        </a>
+                        <p>附近约炮</p>
+                    </div>
+					
+                   
+                   
                     <div class="appico">
                         <a aid="1505" href="https://001124.com" target="_blank" referrerpolicy="no-referrer" class="downurl">
                             <div class="naicon btnx btn-raised" title="pg官网">
@@ -281,7 +380,7 @@ var _hmt = _hmt || [];
                         <p>威尼斯人</p>
                     </div>
                     <div class="appico">
-                        <a aid="1528" href="https://mmgg0118sjadjzhqymm0419.xolvi.xyz" target="_blank" referrerpolicy="no-referrer" class="downurl">
+                        <a aid="1528" href="https://arac3j.qygnf7ig.top/xgys-jhxgys2133" target="_blank" referrerpolicy="no-referrer" class="downurl">
                             <div class="naicon btnx btn-raised" title="免费看片">
                                 <img class="jxLazyClass" src="https://dcu2fakn2jc3s.cloudfront.net/bbtp/200.gif">
                             </div>
@@ -317,27 +416,18 @@ var _hmt = _hmt || [];
                     <div class="appico">
                         <a aid="1087" href="http://panduola.mz54.com/" target="_blank" referrerpolicy="no-referrer" class="downurl">
                             <div class="naicon btnx btn-raised" title="成人AV">
-                                <img class="jxLazyClass" src="https://tupiantuoguan.top/mimi/xzhan.gif">
+                                <img class="jxLazyClass" src="https://img.share9527.cc/img/lj24081401.gif">
                             </div>
                         </a>
                         <p>成人AV</p>
                     </div>
-
-                
-                    <div class="appico">
-                        <a aid="1087" href="http://ltnjtadehy.my/" target="_blank" referrerpolicy="no-referrer" class="downurl">
-                            <div class="naicon btnx btn-raised" title="性爱视频">
-                                <img class="jxLazyClass" src="https://xn--ers885ak78a.renshouxingjiao216.sbs/template/yxzhanv/image/%E6%80%A7%E7%A6%8F-logo04.gif">
-                            </div>
-                        </a>
-                        <p>性爱视频</p>
-                    </div>
-                    
-          
-
-
 					
-  </div>
+					
+                    
+					
+					
+                  
+ </div>
             </div>
         </div>
     </div>
@@ -446,27 +536,27 @@ var _hmt = _hmt || [];
     </div>
 </div>
                     
-                  <div class="vod-item a-link" to="https://jpxm3u8.com/20251016/6sqrb4pf/2156kb/hls/index.m3u8">
-    <div class="random" style="width:100%">
-        <div class="rank-a" style="height: 115.5px;">
-            <!-- 修改1: 将原本错误的 data-original (指向 m3u8) 改为真正的图片封面链接 -->
-            <img class="lazy lazy-img-fadein" data-original="https://qpic.ocdn.stream/videos/202504/24/680956d240114f6bdeac0ae4/cover.jpg" style="width: 100%; height: 100%; object-fit: cover;" src="https://qpic.ocdn.stream/videos/202504/24/680956d240114f6bdeac0ae4/cover.jpg">
-            <div class="motion-preview"></div>
-            <div class="mask_info">
-                <!-- 修改2: 移除错误的 document.write，保留静态时长文本 -->
-                 
-                <div class="pre-hits">
-                    <img src="https://ali-ec.static.yximgs.com/bs2/upload-kwaishop-themis-bucket/879d00b1-3290-43b4-83df-3208b9fba0e5_eee3390093d1d75abdb5108d26325025.jpg"><span>&nbsp;18.5w</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="rank-title">女神经穿着黑丝操爆了</div>
-        
-        <!-- 修改3: 添加隐藏的 M3U8 视频链接（用于播放器识别），不添加额外代码仅作为数据属性存储 -->
-        <a href="https://jpxm3u8.com/20251016/6sqrb4pf/2156kb/hls/index.m3u8" style="display: none;" class="video-m3u8-link"></a>
-    </div>
-</div>
+                  <div class="vod-item a-link" to="https://krevonix.com/20251029/RXMvkow1/2000kb/hls/index.m3u8">
+                        <div class="random" style="width:100%">
+                            <div class="rank-a" style="height: 115.5px;">
+                                <img class="lazy lazy-img-fadein" data-original="https://res-pp.atkqsc.com/image/img/2026-06-11/minio/cff3f5460aa44654.dat" style="width: 100%; height: 100%; object-fit: cover;" src="https://fqjpg7.top/upload/vod/20250916-1/3150f6f2cc18fea72c05398ea2f74c56.png">
+                                <div class="motion-preview"></div>
+                                <div class="mask_info">
+                                    <div class="pre-time"><span><script>document.write(secondsToHMS(1871))</script>00:31:11</span></div>
+                                    <div class="pre-hits">
+                                        <img src="https://ali-ec.static.yximgs.com/bs2/upload-kwaishop-themis-bucket/879d00b1-3290-43b4-83df-3208b9fba0e5_eee3390093d1d75abdb5108d26325025.jpg"><span>&nbsp;2.87w</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="rank-title">爱上草我的男人</div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
                 <div class="vod-item a-link" to="https://jpxm3u8.com/20250719/CnjL9NW3/621kb/hls/index.m3u8">
     <div class="random" style="width:100%">
         <div class="rank-a" style="height: 115.5px;">
@@ -1305,10 +1395,75 @@ var _hmt = _hmt || [];
     
 
 
+    <!-- HLS.js 播放器库 -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+(function(){
+    // 等待页面加载完成
+    if(document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
     
+    function init() {
+        // 获取所有包含 m3u8 链接的元素
+        var items = document.querySelectorAll('[href*="m3u8"], [to*="m3u8"]');
+        
+        if(items.length === 0) return;
+        
+        // 为每个视频元素绑定点击事件
+        for(var i = 0; i < items.length; i++) {
+            items[i].style.cursor = 'pointer';
+            items[i].onclick = (function(el) {
+                return function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var url = el.href || el.getAttribute('to');
+                    if(url && url.indexOf('.m3u8') > -1) {
+                        playM3U8(url);
+                    }
+                    return false;
+                };
+            })(items[i]);
+        }
+        
+        // 播放函数
+        function playM3U8(url) {
+            // 移除已有播放器
+            var oldPlayer = document.getElementById('m3u8Player');
+            if(oldPlayer) oldPlayer.remove();
+            
+            // 创建播放器弹窗
+            var playerDiv = document.createElement('div');
+            playerDiv.id = 'm3u8Player';
+            playerDiv.innerHTML = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:999999;display:flex;justify-content:center;align-items:center"><div style="width:90%;max-width:900px;position:relative"><video id="m3u8Video" controls autoplay style="width:100%;background:#000;border-radius:8px"></video><button style="position:absolute;top:-40px;right:0;padding:8px 16px;background:#ff3b30;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px" onclick="document.getElementById(\'m3u8Player\').remove()">关闭</button></div></div>';
+            document.body.appendChild(playerDiv);
+            
+            var video = document.getElementById('m3u8Video');
+            
+            // 使用 HLS.js 播放
+            if(typeof Hls !== 'undefined' && Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play().catch(function(){});
+                });
+                // 存储到全局以便关闭时清理
+                window._currentHls = hls;
+            } else if(video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.play();
+            } else {
+                alert('浏览器不支持播放此视频');
+            }
+        }
+    }
+})();
+</script>
 
-
-    </div>
 
     <script type="text/javascript">
         Xj.adv.text('%5B%7B%22id%22%3A1579%2C%22title%22%3A%22%E6%B0%B8%E4%B9%85%E7%9C%8B%E7%89%87%22%2C%22image%22%3A%22https%3A%2F%2Ftxmov2.a.kwimgs.com%2Fbs2%2Fupload-kwaishop-material-public%2FdXBsb2FkLWt3YWlzaG9wLW1hdGVyaWFsLXB1YmxpYzpNRVNTQUdFX0NFTlRFUl9GRUVEQkFDSzo1MTc0NjY2OTQwOk1FUkNIQU5UOltCQDZlZDA3ZjU5OjE5NzQ3Njk1ODg2OTQw.jpg%22%2C%22url%22%3A%22http%3A%2F%2F95.40.242.101%3A8888%2F%3FchannelCode%3Dpapa%22%2C%22hits%22%3A0%2C%22introduce%22%3A%22%22%7D%2C%7B%22id%22%3A1540%2C%22title%22%3A%22%E5%AD%A6%E5%A6%B9%E6%8F%B4%E4%BA%A4%22%2C%22image%22%3A%22https%3A%2F%2Ftxmov2.a.kwimgs.com%2Fbs2%2Fupload-kwaishop-material-public%2FdXBsb2FkLWt3YWlzaG9wLW1hdGVyaWFsLXB1YmxpYzpNRVNTQUdFX0NFTlRFUl9GRUVEQkFDSzo1MTc0NjY2OTQwOk1FUkNIQU5UOltCQDI4MWZkNzI6MTg3MzUxMTQwMzM5NDA%253D.jpg%22%2C%22url%22%3A%22https%3A%2F%2Fhiggm288.vip%22%2C%22hits%22%3A0%2C%22introduce%22%3A%22%22%7D%2C%7B%22id%22%3A1539%2C%22title%22%3A%22%E5%85%A8%E5%9B%BD%E7%A9%BA%E9%99%8D%22%2C%22image%22%3A%22https%3A%2F%2Ftxmov2.a.kwimgs.com%2Fbs2%2Fupload-kwaishop-material-public%2FdXBsb2FkLWt3YWlzaG9wLW1hdGVyaWFsLXB1YmxpYzpNRVNTQUdFX0NFTlRFUl9GRUVEQkFDSzo1MTc0NjY2OTQwOk1FUkNIQU5UOltCQDI4MWZkNzI6MTg3MzUxMTQwMzM5NDA%253D.jpg%22%2C%22url%22%3A%22https%3A%2F%2Fhiggm288.vip%22%2C%22hits%22%3A0%2C%22introduce%22%3A%22%22%7D%5D');
@@ -1336,7 +1491,7 @@ var _hmt = _hmt || [];
   </div>
 
   <div class="newbottom">广告联系：<a href="https://t.me/hfdh65589" style="color:black;">@hfdh65589</a></div>
-  <div class="tips">长夜漫漫 有我相伴<p>永久域名：<b>https://tinyurl.com/papasss1</b></p></div>
+  <div class="tips">长夜漫漫 有我相伴<p>永久域名：<b>sosiss.shop</b></p></div>
 </div>
 
 </div>
